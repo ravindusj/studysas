@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:studyx_app/chat_page.dart';
 import 'package:studyx_app/notes_page.dart';
 import 'firebase_options.dart';
 import 'account_page.dart';
@@ -46,9 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const _HomePage(),
     const NotesPage(),
-    const Center(
-      child: Text('Chat Page', style: TextStyle(color: Colors.white)),
-    ),
+    const ChatPage(),
      AccountPage(),
   ];
 

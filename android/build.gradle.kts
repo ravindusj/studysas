@@ -19,6 +19,7 @@ allprojects {
         maven { url = uri("https://www.jitpack.io") }
         maven { url = uri("https://maven.google.com") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
+        maven { url = uri("https://google.maven.org/webrtc") }
     }
 }
 
