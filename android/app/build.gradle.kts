@@ -58,7 +58,7 @@ dependencies {
     
     // WebRTC dependencies
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-    implementation("com.github.webrtc-sdk:android:104.5112.08")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation ("org.webrtc:google-webrtc:1.0.+")
 }
 
