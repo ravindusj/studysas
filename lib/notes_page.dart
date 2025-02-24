@@ -135,7 +135,6 @@ class NotesPage extends StatelessWidget {
   }
 
   Future<void> _deleteNote(BuildContext context, String noteId) async {
-    // Show confirmation dialog first
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -162,7 +161,6 @@ class NotesPage extends StatelessWidget {
           .doc(noteId)
           .delete();
       
-      // Only show snackbar if the widget is still mounted
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Note deleted successfully')),

@@ -46,9 +46,8 @@ class _NoteEditorSheetState extends State<NoteEditorSheet> {
   }
 
   Future<void> _saveNote() async {
-    if (!mounted) return;  // Add this check
+    if (!mounted) return;
 
-    // Validate inputs before proceeding
     if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

@@ -49,7 +49,7 @@ class AccountPage extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              // Implement edit profile functionality
+              
             },
           ),
           ListTile(

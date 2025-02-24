@@ -10,7 +10,7 @@ class AuthService {
   );
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Email/Password Sign Up
+
   Future<UserCredential?> signUpWithEmail(
     String email,
     String password,
@@ -20,7 +20,6 @@ class AuthService {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      // Create user profile in Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'name': name,
         'email': email,
@@ -33,7 +32,6 @@ class AuthService {
     }
   }
 
-  // Email/Password Sign In
   Future<UserCredential?> signInWithEmail(String email, String password) async {
     try {
       return await _auth.signInWithEmailAndPassword(
@@ -45,7 +43,6 @@ class AuthService {
     }
   }
 
-  // Google Sign In
   Future<UserCredential?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -63,7 +60,6 @@ class AuthService {
         credential,
       );
 
-      // Create/Update user profile in Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'name': googleUser.displayName,
         'email': googleUser.email,
@@ -76,13 +72,13 @@ class AuthService {
     }
   }
 
-  // Sign Out
+
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
   }
 
-  // Get Current User
+
   User? getCurrentUser() {
     return _auth.currentUser;
   }

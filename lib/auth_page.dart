@@ -159,7 +159,6 @@ class _AuthPageState extends State<AuthPage> {
           );
         }
         if (mounted) {
-          // Replace Navigator.pop with Navigator.pushReplacement if needed
           Navigator.pop(context);
         }
       } catch (e) {
