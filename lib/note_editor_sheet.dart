@@ -46,45 +46,58 @@ class _NoteEditorSheetState extends State<NoteEditorSheet> {
   }
 
   Future<void> _saveNote() async {
-  if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Title and content cannot be empty')),
-    );
-    return;
-  }
+    if (!mounted) return;  // Add this check
 
-        final currentUser = FirebaseAuth.instance.currentUser;
+    // Validate inputs before proceeding
+    if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Title and content cannot be empty')),
+      );
+      return;
+    }
+
+    final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please sign in to save notes')),
       );
       return;
     }
 
-    final note = Note(
-      id: widget.note?.id,
-      title: _titleController.text,
-      content: _contentController.text,
-      createdAt: widget.note?.createdAt ?? DateTime.now(),
-      updatedAt: DateTime.now(),
-      userID: currentUser.uid,
-    );
-
     try {
+      final note = Note(
+        id: widget.note?.id,
+        title: _titleController.text,
+        content: _contentController.text,
+        createdAt: widget.note?.createdAt ?? DateTime.now(),
+        updatedAt: DateTime.now(),
+        userID: currentUser.uid,
+      );
+
       if (widget.note?.id != null) {
         await FirebaseFirestore.instance
             .collection('notes')
             .doc(widget.note!.id)
             .update(note.toMap());
       } else {
-        await FirebaseFirestore.instance.collection('notes').add(note.toMap());
+        await FirebaseFirestore.instance
+            .collection('notes')
+            .add(note.toMap());
       }
-      Navigator.pop(context);
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Note saved successfully')),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Error saving note')));
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving note: ${e.toString()}')),
+      );
     }
-    
   }
 
   @override

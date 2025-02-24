@@ -139,6 +139,7 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Future<void> _handleSubmit() async {
+    if (!mounted) return;
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -157,11 +158,18 @@ class _AuthPageState extends State<AuthPage> {
             _nameController.text,
           );
         }
+        if (mounted) {
+          // Replace Navigator.pop with Navigator.pushReplacement if needed
+          Navigator.pop(context);
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
-      } finally {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
+          );
+        }
+      }
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
@@ -170,20 +178,35 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Future<void> _handleGoogleSignIn() async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
     });
 
     try {
       await _authService.signInWithGoogle();
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
-    } finally {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    }
+    if (mounted) {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    super.dispose();
   }
 }
