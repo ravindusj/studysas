@@ -7,12 +7,14 @@ plugins {
 
 android {
     namespace = "com.nsbm.studyx"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34  // Update compileSdk
     ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        // Add WebRTC support
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -21,10 +23,14 @@ android {
 
     defaultConfig {
         applicationId = "com.nsbm.studyx"
-        minSdk = 23
-           targetSdk = flutter.targetSdkVersion
+        minSdk = 24  // Update minSdk for WebRTC
+        targetSdk = 34  // Update targetSdk
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Add WebRTC specific configurations
+        ndk {
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
+        }
     }
 
     buildTypes {
@@ -49,5 +55,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+    
+    // WebRTC dependencies
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    implementation("com.github.webrtc-sdk:android:104.5112.08")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
